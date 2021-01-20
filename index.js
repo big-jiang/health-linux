@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 let Koa = require('koa');
 let Router = require('koa-router');
 let bodyparser = require('koa-bodyparser');
@@ -36,3 +37,6 @@ async function getHealth(){
 }
 app.use(router.routes());
 app.listen(8080);
+=======
+console.log(101)
+>>>>>>> b314027c6d4a008b7d97ae5552efb59b35f2e3a0
