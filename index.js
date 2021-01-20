@@ -14,7 +14,7 @@ app.use(async (ctx,next)=>{
 	let etime = new Date().getTime();
 	console.log('time:'+(etime-stime)+'ms')
 })
-console.log('101')
+console.log('1001')
 router.post('/getHealth',async(ctx)=>{ 
     let {name,idcard} = ctx.request.body;
     console.log(`name:${name}-${idcard}`);
