@@ -1,0 +1,17 @@
+{ 
+   "name":"health",
+   "version":"1.0.0",
+   "description":"",
+   "main":"index.js",
+   "scripts":{},
+   "author":"",
+   "license":"ISC",
+   "dependencies":{
+	"koa":"^2.13.1",
+	"koa-router":"^10.0.0",
+	"koa-bodyparser":"^4.3.0",
+	"axios":"^0.21.1",
+	"request":"^2.88.2`",
+	"md5":"^2.3.0"
+  }
+}
