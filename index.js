@@ -1,3 +1,4 @@
+let getHealth = require('getHealth');
 let Koa = require('koa');
 let Router = require('koa-router');
 let router = new Router();
@@ -30,19 +31,19 @@ idcard = ctx.request.body.idcard
 //let result =(await getHealth(getSecUrl,appsec)).data
 
 //console.log(ctx.request.headers)
-let result = (await getHealth(getHealthUrl,requestsec)).data
+let result = (await getHealth(idcard))
 console.log(result)
 ctx.body = result;
 });
 
-function getHealth(url,reqsec){
-	var newTime = new Date()
-	var time = newTime.getTime()
-	var str = appkey+reqsec+time
-	var sign = md5(str)
-	var param = `requestTime=${time}&sign=${sign}&appKey=${appkey}&sfzh=${idcard}`
-	return new Promise((resolve)=>{axios.post(`${url}?${param}`).then(res=>{resolve(res)}).catch(err=>{resolve(err)})}
-)}
+// function getHealth(url,reqsec){
+// 	var newTime = new Date()
+// 	var time = newTime.getTime()
+// 	var str = appkey+reqsec+time
+// 	var sign = md5(str)
+// 	var param = `requestTime=${time}&sign=${sign}&appKey=${appkey}&sfzh=${idcard}`
+// 	return new Promise((resolve)=>{axios.post(`${url}?${param}`).then(res=>{resolve(res)}).catch(err=>{resolve(err)})}
+// )}
 
 app.use(router.routes());
 app.listen(8080);
