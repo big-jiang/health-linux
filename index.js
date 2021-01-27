@@ -1,11 +1,10 @@
-let getHealth = require('getHealth');
+let getHealth = require('./getHealth.js');
 let Koa = require('koa');
 let Router = require('koa-router');
 let router = new Router();
 let app = new Koa();
 let axios = require('axios');
 let md5 = require('md5');
-let request = require('request');
 let bodyParser = require('koa-bodyparser')
 app.use(bodyParser())
 let appsec ='15203deafb62435192456c3df8c4a707';
@@ -31,8 +30,9 @@ idcard = ctx.request.body.idcard
 //let result =(await getHealth(getSecUrl,appsec)).data
 
 //console.log(ctx.request.headers)
-let result = (await getHealth(idcard))
-console.log(result)
+let result = (await getHealth.getHealth(idcard))
+//let result = {code:200,data:"lvma"}
+//console.log(result)
 ctx.body = result;
 });
 

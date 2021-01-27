@@ -8,17 +8,17 @@ let RefreshTokenBySecUrl = 'http://172.23.31.13:80/gateway/app/refreshTokenBySec
 let RefreshTokenByKeyUrl = 'http://172.23.31.13:80/gateway/app/refreshTokenByKey.htm';
 let GetHealthUrl = 'http://172.23.31.13:80/gateway/api/001008006007001/dataSharing/cfe4n4fvP8Lz2qbe.htm';
 let CloudBaseUrl = 'https://env-web-16c0e3-1258099036.ap-shanghai.service.tcloudbase.com/secrect';
-
 //获取健康码状况
 async function getHealth(idcard){
 	var reqSec = await getSecret(`${CloudBaseUrl}?method=getSecret`);
-	var back = await getData(GetHealthUrl,reqSec,`&sfzh=${idcard}`);
+	console.log(reqSec);
+	var back = (await getData(GetHealthUrl,reqSec,`&sfzh=${idcard}`)).data;
 	return back;
 }
 
 //数据请求
 async function getData(reqUrl,reqSec,fields){
-	var time = new Date().getTime();
+    var time = new Date().getTime();
     var str = AppKey + reqSec + time;
     var sign = md5(str);
     var param = `requestTime=${time}&sign=${sign}&appKey=${AppKey}${fields}`;
@@ -29,7 +29,7 @@ async function getData(reqUrl,reqSec,fields){
 
 //刷新密钥
 async function refresh(reqUrl,reqSec){
-	var time = new Date().getTime();
+    var time = new Date().getTime();
     var str = AppKey + reqSec + time;
     var sign = md5(str);
     var param = `requestTime=${time}&sign=${sign}&appKey=${AppKey}`;
@@ -37,13 +37,13 @@ async function refresh(reqUrl,reqSec){
 
   const promise = new Promise((resolve, reject) => {
     axios.post(url).then(response=>{
-  		var res = response;
+  	var res = response.data;
       //获取到新的请求秘钥
       //秘钥持久化.datas.requestSecret
-      console.log(typeof res,res);
-      //saveSecret(`${CloudBaseUrl}?method=saveSecret&data=${res.datas}`)
-      resolve('1')
-      //resolve(res.datas.requestSecret);
+      var fields = JSON.stringify(res.datas);
+      saveSecret(`${CloudBaseUrl}?method=saveSecret&data=${fields}`);
+      //resolve('1')
+      resolve(res.datas.requestSecret);
   	}).catch(err=>{reject(err);})
   });
   return promise;
@@ -53,7 +53,8 @@ async function refresh(reqUrl,reqSec){
 async function getSecret(url){
 	const promise = new Promise((resolve,reject)=>{
   	axios.post(url).then(response=>{
-  		var res = response;
+	console.log(response)
+	 var res = response.data;
     	if (res.code == 2) {
     		//使用bysec刷新秘钥
       	resolve(refresh(RefreshTokenBySecUrl, res.data.refreshSecret));
@@ -79,4 +80,4 @@ async function saveSecret(url) {
   	}).catch(err=>{console.log('出现错误',err);});
 }
 
-export default getHealth;
+module.exports = { getHealth }
